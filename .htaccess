@@ -1,0 +1,19 @@
+# Block access to any dot-files; .env etc.
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Also block backup files and IDE artifacts
+<FilesMatch "\.(env|yml|yaml|json|sql|bak|backup|swp|swo)$">
+    Require all denied
+</FilesMatch>
+
+# Disable directory listing
+Options -Indexes
+
+# rewrites to allow more convenient URL structure in API
+RewriteEngine On
+RewriteBase /api/palettes/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [QSA,L]
